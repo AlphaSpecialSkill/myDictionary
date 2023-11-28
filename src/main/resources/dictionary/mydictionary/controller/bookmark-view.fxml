@@ -17,7 +17,7 @@
             <children>
                 <VBox fx:id="bookmarkSearch" prefHeight="600.0" prefWidth="270.0">
                     <children>
-                        <TextField fx:id="bookmarkSearchBar" prefHeight="30.0" prefWidth="250.0">
+                        <TextField fx:id="bookmarkTextField" prefHeight="30.0" prefWidth="250.0">
                             <VBox.margin>
                                 <Insets left="10.0" right="10.0" top="20.0" />
                             </VBox.margin>
@@ -40,7 +40,7 @@
                             <children>
                                 <HBox layoutX="14.0" layoutY="25.0" prefHeight="50.0" prefWidth="150.0">
                                     <children>
-                                        <Label fx:id="bookmarkWordText" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="150.0" text="Nghĩa của từ">
+                                        <Label fx:id="bookmarkLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="150.0" text="Nghĩa của từ">
                                             <font>
                                                 <Font name="System Bold" size="20.0" />
                                             </font>
@@ -55,7 +55,7 @@
                                 <HBox layoutX="380.0" layoutY="25.0" prefHeight="50.0" prefWidth="150.0">
                                     <children>
                                         <Button fx:id="bookmarkEditButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="button-edit" />
-                                        <Button fx:id="bookmarkDeleteButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="button-delete" />
+                                        <Button fx:id="bookmarkDeleteButton" mnemonicParsing="false" onAction="#clearAllBookmarkWord" prefHeight="50.0" prefWidth="50.0" styleClass="button-delete" />
                                     </children>
                                 </HBox>
                             </children>

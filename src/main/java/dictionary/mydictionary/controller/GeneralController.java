@@ -106,7 +106,7 @@ public class GeneralController extends MainController implements Initializable {
         }).collect(Collectors.toSet());
     }
 
-    public void enterKeyPressed(TreeMap<String, Word> temp) {
+    public void enterKeyPressed(Map<String, Word> temp) {
         textField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 this.listView.getItems().clear();
@@ -115,7 +115,7 @@ public class GeneralController extends MainController implements Initializable {
         });
     }
 
-    public void textFieldInput(TreeMap<String, Word> temp) {
+    public void textFieldInput(Map<String, Word> temp) {
         textField.setOnKeyPressed(event -> {
             this.listView.getItems().clear();
             this.listView.getItems().addAll(searching(textField.getText(), temp));

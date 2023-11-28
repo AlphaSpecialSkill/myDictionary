@@ -63,6 +63,7 @@ public class MainController implements Initializable {
         borderPane.setCenter(view);
 
         bookmarkController = loader.getController();
+        bookmarkController.init();
     }
 
     @FXML

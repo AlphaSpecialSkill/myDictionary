@@ -9,6 +9,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 
+import java.io.IOException;
+
 public class BookmarkController extends GeneralController{
 
     @FXML
@@ -24,7 +26,7 @@ public class BookmarkController extends GeneralController{
     protected VBox bookmarkSearch;
 
     @FXML
-    protected TextField bookmarkSearchBar;
+    protected TextField bookmarkTextField;
 
     @FXML
     protected WebView bookmarkDefinitionView;
@@ -36,5 +38,32 @@ public class BookmarkController extends GeneralController{
     protected Button bookmarkEditButton;
 
     @FXML
-    protected Label bookmarkWordText;
+    protected Label bookmarkLabel;
+
+    public void clearAllBookmarkWord(){
+        getCurrentDic().getBookmarkNewWords().clear();
+        try {
+            getCurrentDic().updateWordToFile(getCurrentDic().getBOOKMARK_PATH(), getCurrentDic().getBookmarkNewWords());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        bookmarkListView.getItems().clear();
+    }
+
+    public void init(){
+        setListView(this.bookmarkListView);
+        setDefinitionView(this.bookmarkDefinitionView);
+        setTextField(this.bookmarkTextField);
+        setLabel(this.bookmarkLabel);
+        initComponents(this.bookmarkPane, getCurrentDic().getBookmarkNewWords(), "#bookmarkListView", "#bookmarkDefinitionView");
+        try {
+            readData(getCurrentDic().getBOOKMARK_PATH(), getCurrentDic().getBookmarkNewWords());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        loadWordList(getCurrentDic().getBookmarkNewWords());
+        enterKeyPressed(getCurrentDic().getBookmarkNewWords());
+        textFieldInput(getCurrentDic().getBookmarkNewWords());
+    }
 }
