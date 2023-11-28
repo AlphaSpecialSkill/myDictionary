@@ -11,7 +11,7 @@
          <left>
             <VBox fx:id="navBar" prefHeight="600.0" prefWidth="80.0" styleClass="vbox" stylesheets="@../stylesheets/mainstyles.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="homebtn" mnemonicParsing="false" onAction="#pressedHome" prefHeight="80.0" prefWidth="80.0" text="Home" textFill="WHITE" />
+                  <Button fx:id="homebtn" mnemonicParsing="false" onAction="#pressedSearch" prefHeight="80.0" prefWidth="80.0" text="Home" textFill="WHITE" />
                   <Button fx:id="googlebtn" mnemonicParsing="false" onMouseClicked="#pressedGoogle" prefHeight="80.0" prefWidth="80.0" text="Google" textFill="WHITE" />
                   <Button fx:id="bookmarkbtn" mnemonicParsing="false" onMouseClicked="#pressedBookmark" prefHeight="80.0" prefWidth="80.0" text="Bookmark" textFill="WHITE" />
                   <Button fx:id="historybtn" mnemonicParsing="false" onMouseClicked="#pressedHistory" prefHeight="80.0" prefWidth="80.0" text="History" textFill="WHITE" />

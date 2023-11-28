@@ -15,7 +15,7 @@ public class BookmarkController extends GeneralController{
     protected VBox bookmarkContent;
 
     @FXML
-    protected ListView<?> bookmarkListView;
+    protected ListView<String> bookmarkListView;
 
     @FXML
     protected AnchorPane bookmarkPane;

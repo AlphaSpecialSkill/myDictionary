@@ -6,47 +6,36 @@ import dictionary.mydictionary.Model.Word;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class SearchController extends GeneralController implements Initializable {
-    private static final String EV_FILE_PATH = "src/main/resources/dictionary/mydictionary/data/E_V.txt";
-    private static final String VE_FILE_PATH = "src/main/resources/dictionary/mydictionary/data/V_E.txt";
-
 
     @FXML
-    protected Label wordText;
+    protected Label searchLabel;
 
     @FXML
-    protected VBox content;
+    protected VBox searchContent;
 
     @FXML
     protected AnchorPane searchPane;
 
     @FXML
-    protected ListView<String> listView;
+    protected ListView<String> searchListView;
 
     @FXML
     protected VBox search;
 
     @FXML
-    protected TextField searchbar;
+    protected TextField searchTextField;
 
     @FXML
-    protected HBox hboxHome;
-
-    @FXML
-    protected WebView definitionView;
+    protected WebView searchDefinitionView;
 
     @FXML
     protected Button bookmarkFalseButton;
@@ -63,76 +52,6 @@ public class SearchController extends GeneralController implements Initializable
 
     public void setSearchPane(AnchorPane searchPane) {
         this.searchPane = searchPane;
-    }
-
-    public ListView<String> getListView() {
-        return listView;
-    }
-
-    public void setListView(ListView<String> listView) {
-        this.listView = listView;
-    }
-
-    public void initComponents(AnchorPane view, Map<String, Word> temp) {
-        this.definitionView = (WebView) view.lookup("#definitionView");
-        this.listView = (ListView<String>) view.lookup("#listView");
-//        HomeViewController context = this;
-        this.listView.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> {
-                    Word word = temp.get(newValue.trim());
-                    String definition = word.getDef();
-                    this.definitionView.getEngine().loadContent(definition, "text/html");
-                    wordText.setText(word.getWord());
-                }
-        );
-    }
-
-    public void loadWordList(Map<String, Word> temp) {
-        this.listView.getItems().addAll(temp.keySet());
-    }
-
-    public void readData(String path, Map<String, Word> temp) throws IOException {
-        FileReader fis = new FileReader(path);
-        BufferedReader br = new BufferedReader(fis);
-        String line;
-        while ((line = br.readLine()) != null) {
-            String[] parts = line.split(SPLITTING_CHARACTERS);
-            String word = parts[0];
-            String definition = SPLITTING_CHARACTERS + parts[1];
-            Word wordObj = new Word(word, definition);
-            temp.put(word, wordObj);
-        }
-        TreeMap<String, Word> sorted = new TreeMap<>(temp);
-        temp.clear();
-        temp.putAll(sorted);
-    }
-
-    public Set<String> searching(String searchWords, Map<String, Word> temp) {
-        Set<String> wordSet = temp.keySet();
-        List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
-
-        return wordSet.stream().filter(input -> {
-            return searchWordsArray.stream().allMatch(word -> input.toLowerCase().contains(word.toLowerCase()));
-        }).collect(Collectors.toSet());
-    }
-
-    public void enterKeyPressed(TreeMap<String, Word> temp) {
-        searchbar.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                this.listView.getItems().clear();
-                this.listView.getItems().addAll(searching(searchbar.getText(), temp));
-            }
-        });
-    }
-
-    public void searchbarInput(TreeMap<String, Word> temp) {
-        searchbar.setOnKeyPressed(event -> {
-            this.listView.getItems().clear();
-            this.listView.getItems().addAll(searching(searchbar.getText(), temp));
-            if(searchbar.getText() == null){
-                loadWordList(temp);
-            }
-        });
     }
 
     protected void addBookmark(Word word) throws IOException {
@@ -152,7 +71,7 @@ public class SearchController extends GeneralController implements Initializable
 
     @FXML
     public void handleClickBookmarkButton() throws IOException {
-        String spelling = wordText.getText();
+        String spelling = searchLabel.getText();
         if (spelling.equals("")) {
             showWarningAlert();
             return;
@@ -177,11 +96,15 @@ public class SearchController extends GeneralController implements Initializable
     }
 
     public void pressedSpeaker(){
-        TextToSpeech.playSoundGoogleTranslateEnToVi(wordText.getText());
+        TextToSpeech.playSoundGoogleTranslateEnToVi(searchLabel.getText());
     }
 
     public void init(){
-        initComponents(searchPane, getCurrentDic().getNewWords());
+        setListView(this.searchListView);
+        setDefinitionView(this.searchDefinitionView);
+        setTextField(this.searchTextField);
+        setLabel(this.searchLabel);
+        initComponents(this.searchPane, getCurrentDic().getNewWords(), "#searchListView", "#searchDefinitionView");
         try {
             readData(getCurrentDic().getPATH(), getCurrentDic().getNewWords());
         } catch (IOException e) {
@@ -190,6 +113,6 @@ public class SearchController extends GeneralController implements Initializable
 
         loadWordList(getCurrentDic().getNewWords());
         enterKeyPressed(getCurrentDic().getNewWords());
-        searchbarInput(getCurrentDic().getNewWords());
+        textFieldInput(getCurrentDic().getNewWords());
     }
 }
