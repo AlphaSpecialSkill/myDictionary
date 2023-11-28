@@ -1,6 +1,7 @@
 package dictionary.mydictionary.controller;
 
 
+import dictionary.mydictionary.Model.TextToSpeech;
 import dictionary.mydictionary.Model.Word;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -173,6 +174,10 @@ public class SearchController extends GeneralController implements Initializable
         alert.setHeaderText(null);
         alert.setContentText("Không có từ nào được chọn!");
         alert.showAndWait();
+    }
+
+    public void pressedSpeaker(){
+        TextToSpeech.playSoundGoogleTranslateEnToVi(wordText.getText());
     }
 
     public void init(){

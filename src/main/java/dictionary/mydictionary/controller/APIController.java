@@ -115,10 +115,10 @@ public class APIController implements Initializable {
         text2.setText("Tiếng Việt");
         langTo = "vi";
         if (!Objects.equals(srcText.getText(), "")) {
-            destText.setPromptText(""); // Xóa gợi ý nếu có
-            destText.setStyle(""); // Reset màu sắc văn bản
+            destText.setPromptText("");
+            destText.setStyle("");
             destText.setText(TranslateAPI.translate(langFrom, langTo, srcText.getText()));
-            errorOccurred = false; // Reset trạng thái lỗi
+            errorOccurred = false;
         } else if (langFrom.equals(langTo)) {
             showLanguageError(); // Hiển thị thông báo lỗi ngôn ngữ
         } else {
@@ -133,10 +133,10 @@ public class APIController implements Initializable {
         text2.setText("English");
         langTo = "en";
         if (!Objects.equals(srcText.getText(), "")) {
-            destText.setPromptText(""); // Xóa gợi ý nếu có
-            destText.setStyle(""); // Reset màu sắc văn bản
+            destText.setPromptText("");
+            destText.setStyle("");
             destText.setText(TranslateAPI.translate(langFrom, langTo, srcText.getText()));
-            errorOccurred = false; // Reset trạng thái lỗi
+            errorOccurred = false;
         } else if (langFrom.equals(langTo)) {
             showLanguageError(); // Hiển thị thông báo lỗi ngôn ngữ
         } else {
@@ -151,19 +151,24 @@ public class APIController implements Initializable {
         }
     }
 
+    /**
+     * Show error notification if user choose 2 same languages to translate.
+     */
     void showLanguageError() {
-        destText.setText(""); // Xóa văn bản hiện tại
-        destText.setStyle("-fx-text-fill: red;"); // Thay đổi màu sắc để làm nổi bật thông báo lỗi
-        destText.setText("Vui lòng chọn ngôn ngữ khác!"); // Hiển thị gợi ý nếu cần
-        destText.setVisible(true); // Hiển thị destText nếu đã ẩn
-        errorOccurred = true; // Đặt trạng thái lỗi
+        destText.setText("");
+        destText.setStyle("-fx-text-fill: red;");
+        destText.setText("Vui lòng chọn ngôn ngữ khác!");
+        srcText.setVisible(true);
+        errorOccurred = true;
     }
-
+    /**
+     * Hide error notification if user choose 2 different languages to translate.
+     */
     void hideLanguageError() {
-        destText.setText(""); // Xóa văn bản hiện tại
-        destText.setStyle(""); // Reset màu sắc văn bản
-        destText.setPromptText(""); // Xóa gợi ý nếu có
-        errorOccurred = false; // Reset trạng thái lỗi
+        destText.setText("");
+        destText.setStyle("");
+        destText.setPromptText("");
+        errorOccurred = false;
     }
     @FXML
     public void speak1() throws IOException{
