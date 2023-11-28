@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 
 
 public class SearchController extends GeneralController implements Initializable {
-    private static final String EV_FILE_PATH = "src/main/resources/dictionary/myevdictionary/data/E_V.txt";
-    private static final String VE_FILE_PATH = "src/main/resources/dictionary/myevdictionary/data/V_E.txt";
+    private static final String EV_FILE_PATH = "src/main/resources/dictionary/mydictionary/data/E_V.txt";
+    private static final String VE_FILE_PATH = "src/main/resources/dictionary/mydictionary/data/V_E.txt";
 
 
     @FXML

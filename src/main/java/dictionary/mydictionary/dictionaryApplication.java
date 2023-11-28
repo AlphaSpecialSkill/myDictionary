@@ -12,7 +12,7 @@ import java.util.Objects;
 public class dictionaryApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        AnchorPane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main/main-view.fxml")));
+        AnchorPane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("controller/main-view.fxml")));
         Scene scene = new Scene(root, 900, 600);
         stage.setTitle("Dictionary");
         stage.setScene(scene);

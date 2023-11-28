@@ -4,6 +4,8 @@ module dictionary.mydictionary {
     requires jlayer;
     requires javafx.web;
 
+    exports dictionary.mydictionary.controller;
+    opens dictionary.mydictionary.controller to javafx.fxml;
 
     opens dictionary.mydictionary to javafx.fxml;
     exports dictionary.mydictionary;
