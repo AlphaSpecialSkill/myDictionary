@@ -24,3 +24,9 @@
     -fx-background-position: center;
     -fx-background-size: 27;
 }
+.button-speaker{
+     -fx-background-image: url('../icons/speak.png');
+     -fx-background-repeat: no-repeat;
+     -fx-background-position: center;
+     -fx-background-size: 27;
+ }

@@ -24,8 +24,6 @@ public class MainController implements Initializable {
     @FXML
     protected Button homebtn;
     @FXML
-    protected Button informationbtn;
-    @FXML
     protected Button googlebtn;
     @FXML
     protected Button historybtn;
@@ -42,7 +40,7 @@ public class MainController implements Initializable {
 
     @FXML
     public void pressedHome(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("search.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("search-view.fxml"));
         AnchorPane view = loader.load();
         borderPane.setCenter(view);
 
@@ -59,7 +57,8 @@ public class MainController implements Initializable {
 
     @FXML
     void pressedBookmark(MouseEvent event) throws IOException {
-        searchController.init();
+        AnchorPane bookmarkPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("bookmark-view.fxml")));
+        borderPane.setCenter(bookmarkPage);
     }
 
     @FXML
