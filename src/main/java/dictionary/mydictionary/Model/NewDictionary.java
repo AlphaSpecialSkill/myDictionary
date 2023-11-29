@@ -9,7 +9,7 @@ public class NewDictionary {
     private final String HISTORY_PATH;
     private final String BOOKMARK_PATH;
 
-    private final Map<String, Word> newWords = new TreeMap<>();
+    private final TreeMap<String, Word> newWords = new TreeMap<>();
     private final Map<String, Word> historyNewWords = new HashMap<>();
     private final Map<String, Word> bookmarkNewWords = new HashMap<>();
 
@@ -34,7 +34,7 @@ public class NewDictionary {
         return BOOKMARK_PATH;
     }
 
-    public Map<String, Word> getNewWords() {
+    public TreeMap<String, Word> getNewWords() {
         return newWords;
     }
 

@@ -51,7 +51,7 @@ public class HistoryController extends GeneralController{
     }
 
     public void init(){
-        setListView(this.historyListView);
+        setSearchListView(this.historyListView);
         setDefinitionView(this.historyDefinitionView);
         setTextField(this.historyTextField);
         setLabel(this.historyLabel);
