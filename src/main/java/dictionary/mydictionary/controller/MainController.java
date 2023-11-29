@@ -43,8 +43,8 @@ public class MainController implements Initializable {
     @FXML
     public void pressedSearch(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("search-view.fxml"));
-        AnchorPane searchPane = loader.load();
-        borderPane.setCenter(searchPane);
+        AnchorPane searchPage = loader.load();
+        borderPane.setCenter(searchPage);
 
         searchController = loader.getController();
         searchController.init();
@@ -52,15 +52,19 @@ public class MainController implements Initializable {
 
     @FXML
     void pressedHistory(MouseEvent event) throws IOException {
-        AnchorPane historyPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("history-view.fxml")));
+        FXMLLoader loader = new FXMLLoader((getClass().getResource("history-view.fxml")));
+        AnchorPane historyPage = loader.load();
         borderPane.setCenter(historyPage);
+
+        historyController = loader.getController();
+        historyController.init();
     }
 
     @FXML
     void pressedBookmark(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("bookmark-view.fxml"));
-        AnchorPane view = loader.load();
-        borderPane.setCenter(view);
+        AnchorPane bookmarkPage = loader.load();
+        borderPane.setCenter(bookmarkPage);
 
         bookmarkController = loader.getController();
         bookmarkController.init();
@@ -84,7 +88,6 @@ public class MainController implements Initializable {
         borderPane.setCenter(view);
 
         searchController = loader.getController();
-        view = searchController.getSearchPane();
         searchController.init();
     }
 }

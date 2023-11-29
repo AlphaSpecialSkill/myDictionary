@@ -43,9 +43,7 @@ public class GeneralController extends MainController implements Initializable {
     @FXML
     protected TextField searchTextField;
     @FXML
-    protected ListView<String> searchListView;
-    @FXML
-    protected WebView searchDefinitionView;
+    protected ListView<String> listView;
     @FXML
     private WebView definitionView;
     @FXML
@@ -60,8 +58,8 @@ public class GeneralController extends MainController implements Initializable {
 
     private static boolean isEVDic = true;
 
-    public void setSearchListView(ListView<String> searchListView) {
-        this.searchListView = searchListView;
+    public void setListView(ListView<String> listView) {
+        this.listView = listView;
     }
 
     public void setDefinitionView(WebView definitionView) {
@@ -78,8 +76,8 @@ public class GeneralController extends MainController implements Initializable {
 
     public void initComponents(AnchorPane view, Map<String, Word> temp, String searchListViewId, String definitionViewId) {
         this.definitionView = (WebView) view.lookup(definitionViewId);
-        this.searchListView = (ListView<String>) view.lookup(searchListViewId);
-        this.searchListView.getSelectionModel().selectedItemProperty().addListener(
+        this.listView = (ListView<String>) view.lookup(searchListViewId);
+        this.listView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         Word word = temp.get(newValue.trim());
@@ -100,7 +98,7 @@ public class GeneralController extends MainController implements Initializable {
     }
 
     public void loadWordList(Map<String, Word> temp) {
-        this.searchListView.getItems().addAll(temp.keySet());
+        this.listView.getItems().addAll(temp.keySet());
     }
 
     public void readData(String path, Map<String, Word> temp) throws IOException {
@@ -131,16 +129,16 @@ public class GeneralController extends MainController implements Initializable {
     public void enterKeyPressed(Map<String, Word> temp) {
         textField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-                this.searchListView.getItems().clear();
-                this.searchListView.getItems().addAll(searching(textField.getText(), temp));
+                this.listView.getItems().clear();
+                this.listView.getItems().addAll(searching(textField.getText(), temp));
             }
         });
     }
 
     public void textFieldInput(Map<String, Word> temp) {
         textField.setOnKeyPressed(event -> {
-            this.searchListView.getItems().clear();
-            this.searchListView.getItems().addAll(searching(textField.getText(), temp));
+            this.listView.getItems().clear();
+            this.listView.getItems().addAll(searching(textField.getText(), temp));
             if (textField.getText() == null) {
                 loadWordList(temp);
             }
@@ -151,7 +149,7 @@ public class GeneralController extends MainController implements Initializable {
         searchTextField.clear();
         definitionView.getEngine().loadContent("");
         searchMap.clear();
-        this.searchListView.getItems().clear();
+        this.listView.getItems().clear();
         searchLabel.setText("Nghĩa của từ");
         initComponents(this.searchPane, getCurrentDic().getNewWords(), "#searchListView", "#searchDefinitionView");
         readData(getCurrentDic().getPATH(), getCurrentDic().getNewWords());
@@ -159,7 +157,7 @@ public class GeneralController extends MainController implements Initializable {
             Word temp = entry.getValue();
             searchMap.put(temp.getWord(), temp.getDef());
         }
-        searchListView.getItems().addAll(searchMap.keySet());
+        listView.getItems().addAll(searchMap.keySet());
     }
 
 

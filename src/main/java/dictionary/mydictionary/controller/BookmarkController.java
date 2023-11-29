@@ -51,7 +51,7 @@ public class BookmarkController extends GeneralController{
     }
 
     public void init(){
-        setSearchListView(this.bookmarkListView);
+        setListView(this.bookmarkListView);
         setDefinitionView(this.bookmarkDefinitionView);
         setTextField(this.bookmarkTextField);
         setLabel(this.bookmarkLabel);
