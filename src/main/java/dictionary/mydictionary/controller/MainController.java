@@ -52,15 +52,19 @@ public class MainController implements Initializable {
 
     @FXML
     void pressedHistory(MouseEvent event) throws IOException {
-        AnchorPane historyPage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("history-view.fxml")));
+        FXMLLoader loader = new FXMLLoader((getClass().getResource("history-view.fxml")));
+        AnchorPane historyPage = loader.load();
         borderPane.setCenter(historyPage);
+
+        historyController = loader.getController();
+        historyController.init();
     }
 
     @FXML
     void pressedBookmark(MouseEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("bookmark-view.fxml"));
-        AnchorPane view = loader.load();
-        borderPane.setCenter(view);
+        AnchorPane bookmarkPane = loader.load();
+        borderPane.setCenter(bookmarkPane);
 
         bookmarkController = loader.getController();
         bookmarkController.init();
@@ -68,23 +72,22 @@ public class MainController implements Initializable {
 
     @FXML
     void pressedGoogle(MouseEvent event) throws IOException {
-        AnchorPane APIpage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("googleAPI-view.fxml")));
-        borderPane.setCenter(APIpage);
+        AnchorPane APIpane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("googleAPI-view.fxml")));
+        borderPane.setCenter(APIpane);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("search-view.fxml"));
-        AnchorPane view = null;
+        AnchorPane searchPane = null;
         try {
-            view = loader.load();
+            searchPane = loader.load();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        borderPane.setCenter(view);
+        borderPane.setCenter(searchPane);
 
         searchController = loader.getController();
-        view = searchController.getSearchPane();
         searchController.init();
     }
 }

@@ -3,6 +3,8 @@ package dictionary.mydictionary.controller;
 
 import dictionary.mydictionary.Model.TextToSpeech;
 import dictionary.mydictionary.Model.Word;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -95,11 +97,11 @@ public class SearchController extends GeneralController implements Initializable
         alert.showAndWait();
     }
 
-    public void pressedSpeaker(){
+    public void pressedSpeaker() {
         TextToSpeech.playSoundGoogleTranslateEnToVi(searchLabel.getText());
     }
 
-    public void init(){
+    public void init() {
         setListView(this.searchListView);
         setDefinitionView(this.searchDefinitionView);
         setTextField(this.searchTextField);
@@ -114,5 +116,27 @@ public class SearchController extends GeneralController implements Initializable
         loadWordList(getCurrentDic().getNewWords());
         enterKeyPressed(getCurrentDic().getNewWords());
         textFieldInput(getCurrentDic().getNewWords());
+        List<String> keys = new ArrayList<>();
+        this.searchListView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                String word = searchListView.getSelectionModel().getSelectedItem();
+                String def = getCurrentDic().getNewWords().get(word).getDef();
+                Word temp = new Word(word, def);
+                getCurrentDic().getHistoryNewWords().put(word, temp);
+                keys.add(word);
+
+                if (keys.size() > 22) {
+                    String lastWordInHistory = keys.get(0);
+                    getCurrentDic().getHistoryNewWords().remove(lastWordInHistory);
+                    keys.remove(0);
+                }
+                try {
+                    getCurrentDic().updateWordToFile(getCurrentDic().getHISTORY_PATH(), getCurrentDic().getHistoryNewWords());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 }
