@@ -193,7 +193,26 @@ public class GeneralController extends MainController implements Initializable {
             return evDic;
         else return veDic;
     }
-
+    @FXML
+    public void pressedEdit() {
+//        String spelling = searchTextField.getText();
+//        if (spelling.equals("")) {
+//            searchController.showWarningAlert();
+//            return;
+//        }
+//        if (isOnEditDefinition) {
+//            isOnEditDefinition = false;
+//            editDefinition.setVisible(false);
+//            saveChangeButton.setVisible(false);
+//            return;
+//        }
+//        isOnEditDefinition = true;
+//        saveChangeButton.setVisible(true);
+//        editDefinition.setVisible(true);
+//        int index = Collections.binarySearch(getCurrentDic().getVocab(), new Word(spelling, null));
+//        String meaning = getCurrentDic().getVocab().get(index).getMeaning();
+//        editDefinition.setHtmlText(meaning);
+    }
     @FXML
     public void pressedDelete() throws IOException {
 //        String spelling = searchTextField.getText();
