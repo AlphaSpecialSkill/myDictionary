@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.web.HTMLEditor;
 import javafx.scene.web.WebView;
 
 import java.io.IOException;
@@ -40,23 +41,23 @@ public class SearchController extends GeneralController implements Initializable
     protected WebView searchDefinitionView;
 
     @FXML
+    protected HTMLEditor editDefinition;
+
+    @FXML
     protected Button bookmarkFalseButton;
     @FXML
     protected Button bookmarkTrueButton;
     @FXML
     protected Button deleteButton;
+    @FXML
+    protected Button editButton;
+    @FXML
+    protected Button saveChangeButton;
+
+    protected boolean isOnEditDefinition = false;
 
 
-    public AnchorPane getSearchPane() {
-        return searchPane;
-    }
-
-    public void setSearchPane(AnchorPane searchPane) {
-        this.searchPane = searchPane;
-    }
-
-    protected void addBookmark(Word word) throws IOException {
-        getCurrentDic().initKeys(getCurrentDic().getBookmarkNewWords());
+    public void addBookmark(Word word) throws IOException {
         bookmarkFalseButton.setVisible(false);
         bookmarkTrueButton.setVisible(true);
         getCurrentDic().getBookmarkNewWords().put(word.getWord(), word);
@@ -72,32 +73,84 @@ public class SearchController extends GeneralController implements Initializable
 
     @FXML
     public void handleClickBookmarkButton() throws IOException {
-        String spelling = searchLabel.getText();
-        if (spelling.equals("")) {
+        String word = searchLabel.getText();
+        if (word.equals("")) {
             showWarningAlert();
             return;
         }
-        int _index = Collections.binarySearch(getCurrentDic().initKeys(getCurrentDic().getNewWords()), spelling);
-        int index = Collections.binarySearch(getCurrentDic().initKeys(getCurrentDic().getBookmarkNewWords()), spelling);
+        int _index = Collections.binarySearch(getCurrentDic().initKeys(getCurrentDic().getNewWords()), word);
+        int index = Collections.binarySearch(getCurrentDic().initKeys(getCurrentDic().getBookmarkNewWords()), word);
         if (index < 0) {
             addBookmark(getCurrentDic().getNewWords().get(getCurrentDic().initKeys(getCurrentDic().getNewWords()).get(Math.abs(_index))));
-            System.out.println(index);
         } else {
             removeBookmark(getCurrentDic().getBookmarkNewWords().get(getCurrentDic().initKeys(getCurrentDic().getBookmarkNewWords()).get(index)));
-            System.out.println(index);
         }
-    }
-
-    public void showWarningAlert() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Thông báo");
-        alert.setHeaderText(null);
-        alert.setContentText("Không có từ nào được chọn!");
-        alert.showAndWait();
     }
 
     public void pressedSpeaker(){
         TextToSpeech.playSoundGoogleTranslateEnToVi(searchLabel.getText());
+    }
+
+    @FXML
+    public void pressedEdit() {
+        String word = searchLabel.getText();
+        if (word.equals("")) {
+            showWarningAlert();
+            return;
+        }
+        if (isOnEditDefinition) {
+            isOnEditDefinition = false;
+            editDefinition.setVisible(false);
+            saveChangeButton.setVisible(false);
+            return;
+        }
+        isOnEditDefinition = true;
+        saveChangeButton.setVisible(true);
+        editDefinition.setVisible(true);
+        String def = getCurrentDic().getNewWords().get(word).getDef();
+        editDefinition.setHtmlText(def);
+    }
+
+    @FXML
+    public void pressedSave() throws IOException {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+        alert.setContentText("Sửa từ thành công!");
+        alert.showAndWait();
+        editDefinition.setVisible(false);
+        isOnEditDefinition = false;
+        saveChangeButton.setVisible(false);
+        String newMeaning = editDefinition.getHtmlText().replace(" dir=\"ltr\"", "");
+        String spelling = searchLabel.getText();
+        saveWordToFile(getCurrentDic().getPATH(), getCurrentDic().getNewWords(), spelling, newMeaning);
+        saveWordToFile(getCurrentDic().getHISTORY_PATH(), getCurrentDic().getHistoryNewWords(), spelling, newMeaning);
+        saveWordToFile(getCurrentDic().getBOOKMARK_PATH(), getCurrentDic().getBookmarkNewWords(), spelling, newMeaning);
+        searchDefinitionView.getEngine().loadContent(newMeaning, "text/html");
+    }
+
+    @FXML
+    public void pressedDelete() throws IOException {
+        String spelling = searchTextField.getText();
+        if (spelling.equals("")) {
+            searchController.showWarningAlert();
+            return;
+        }
+        ButtonType yes = new ButtonType("Có", ButtonBar.ButtonData.OK_DONE);
+        ButtonType no = new ButtonType("Không", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc chắn muốn xoá từ này không?", yes, no);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+        alert.showAndWait();
+
+        if (alert.getResult() == yes) {
+            getCurrentDic().removeWord(spelling, getCurrentDic().getPATH(), getCurrentDic().getNewWords());
+            getCurrentDic().removeWord(spelling, getCurrentDic().getHISTORY_PATH(), getCurrentDic().getHistoryNewWords());
+            getCurrentDic().removeWord(spelling, getCurrentDic().getBOOKMARK_PATH(), getCurrentDic().getBookmarkNewWords());
+            searchLabel.setText("Nghĩa của từ");
+            searchTextField.clear();
+            searchDefinitionView.getEngine().loadContent("");
+        }
     }
 
     public void init(){

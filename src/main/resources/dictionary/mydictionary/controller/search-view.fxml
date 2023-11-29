@@ -9,9 +9,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.HTMLEditor?>
 <?import javafx.scene.web.WebView?>
 
-<AnchorPane fx:id="searchPane" prefHeight="600.0" prefWidth="820.0" stylesheets="@../stylesheets/home.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionary.mydictionary.controller.SearchController">
+<AnchorPane fx:id="searchPane" prefHeight="600.0" prefWidth="820.0" stylesheets="@../stylesheets/home.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dictionary.mydictionary.controller.SearchController">
     <children>
         <HBox fx:id="hboxHome" prefHeight="600.0" prefWidth="820.0">
             <children>
@@ -51,13 +52,13 @@
                                         </Label>
                                     </children>
                                 </HBox>
-                                <AnchorPane layoutY="85.0" prefHeight="495.0" prefWidth="530.0">
+                                <HBox layoutX="330.0" layoutY="30.0" prefHeight="40.0" prefWidth="200.0">
                                     <children>
-                                        <WebView fx:id="searchDefinitionView" prefHeight="495.0" prefWidth="530.0" />
-                                    </children>
-                                </AnchorPane>
-                                <HBox layoutX="374.0" layoutY="35.0" prefHeight="40.0" prefWidth="160.0">
-                                    <children>
+                              <Button fx:id="saveChangeButton" contentDisplay="TOP" mnemonicParsing="false" onAction="#pressedSave" prefHeight="40.0" prefWidth="40.0" styleClass="button-save" textFill="#8e9297" visible="false">
+                                 <font>
+                                    <Font size="7.0" />
+                                 </font>
+                              </Button>
                                         <Button fx:id="speakerButton" mnemonicParsing="false" onAction="#pressedSpeaker" prefHeight="40.0" prefWidth="40.0" styleClass="button-speaker" />
                                         <AnchorPane prefHeight="50.0" prefWidth="39.0">
                                             <children>
@@ -69,6 +70,12 @@
                                         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#pressedDelete" prefHeight="40.0" prefWidth="40.0" styleClass="button-delete" />
                                     </children>
                                 </HBox>
+                                <AnchorPane layoutY="85.0" prefHeight="495.0" prefWidth="530.0">
+                                    <children>
+                                        <WebView fx:id="searchDefinitionView" prefHeight="495.0" prefWidth="530.0" />
+                              <HTMLEditor fx:id="editDefinition" htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" prefHeight="495.0" prefWidth="530.0" visible="false" />
+                                    </children>
+                                </AnchorPane>
                             </children>
                             <VBox.margin>
                                 <Insets />

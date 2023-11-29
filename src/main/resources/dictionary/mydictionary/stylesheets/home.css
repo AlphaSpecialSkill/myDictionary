@@ -42,3 +42,7 @@
      -fx-background-position: center;
      -fx-background-size: 27;
  }
+
+.button-save {
+    -fx-graphic: url('../icons/save.png');
+}

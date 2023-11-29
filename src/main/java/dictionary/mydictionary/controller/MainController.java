@@ -39,6 +39,8 @@ public class MainController implements Initializable {
     protected BookmarkController bookmarkController;
     @FXML
     protected HistoryController historyController;
+    @FXML
+    protected AddWordController addWordController;
 
     @FXML
     public void pressedSearch(ActionEvent event) throws IOException {
@@ -74,6 +76,13 @@ public class MainController implements Initializable {
     void pressedGoogle(MouseEvent event) throws IOException {
         AnchorPane APIpage = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("googleAPI-view.fxml")));
         borderPane.setCenter(APIpage);
+    }
+
+    @FXML
+    void pressedAddWord(MouseEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("addWord-view.fxml"));
+        AnchorPane addWordPage = loader.load();
+        borderPane.setCenter(addWordPage);
     }
 
     @Override

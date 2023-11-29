@@ -35,9 +35,6 @@ public class BookmarkController extends GeneralController{
     protected Button bookmarkDeleteButton;
 
     @FXML
-    protected Button bookmarkEditButton;
-
-    @FXML
     protected Label bookmarkLabel;
 
     public void clearAllBookmarkWord(){

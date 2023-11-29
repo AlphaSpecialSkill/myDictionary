@@ -23,9 +23,6 @@ public class HistoryController extends GeneralController{
     protected Button historyDeleteButton;
 
     @FXML
-    protected Button historyEditButton;
-
-    @FXML
     protected Label historyLabel;
 
     @FXML

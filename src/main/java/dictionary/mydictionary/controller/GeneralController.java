@@ -1,5 +1,6 @@
 package dictionary.mydictionary.controller;
 
+import dictionary.mydictionary.Model.DictionaryManagement;
 import dictionary.mydictionary.Model.NewDictionary;
 import dictionary.mydictionary.Model.TextToSpeech;
 import dictionary.mydictionary.Model.Word;
@@ -32,8 +33,6 @@ public class GeneralController extends MainController implements Initializable {
     protected Label searchLabel;
     @FXML
     protected AnchorPane searchPane;
-    @FXML
-    protected Button saveButton;
 
     @FXML
     protected Button transLangEV;
@@ -117,18 +116,28 @@ public class GeneralController extends MainController implements Initializable {
         temp.putAll(sorted);
     }
 
+    private boolean isContain(String str1, String str2){
+        if (DictionaryManagement.isContain(str1, str2) >= 0){
+            return true;
+        }
+        return false;
+    }
+
     public Set<String> searching(String searchWords, Map<String, Word> temp) {
-        Set<String> wordSet = temp.keySet();
+        Set<String> wordSet = new TreeSet<>(temp.keySet());
         List<String> searchWordsArray = Arrays.asList(searchWords.trim().split(" "));
 
         return wordSet.stream().filter(input -> {
-            return searchWordsArray.stream().allMatch(word -> input.toLowerCase().contains(word.toLowerCase()));
+            return searchWordsArray.stream().allMatch(word -> isContain(word.toLowerCase(), input.toLowerCase()));
         }).collect(Collectors.toSet());
     }
 
     public void enterKeyPressed(Map<String, Word> temp) {
         textField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
+                if (textField.getText() == null) {
+                    loadWordList(temp);
+                }
                 this.listView.getItems().clear();
                 this.listView.getItems().addAll(searching(textField.getText(), temp));
             }
@@ -137,29 +146,13 @@ public class GeneralController extends MainController implements Initializable {
 
     public void textFieldInput(Map<String, Word> temp) {
         textField.setOnKeyPressed(event -> {
-            this.listView.getItems().clear();
-            this.listView.getItems().addAll(searching(textField.getText(), temp));
             if (textField.getText() == null) {
                 loadWordList(temp);
             }
+            this.listView.getItems().clear();
+            this.listView.getItems().addAll(searching(textField.getText(), temp));
         });
     }
-
-    public void clearPane() throws IOException {
-        searchTextField.clear();
-        definitionView.getEngine().loadContent("");
-        searchMap.clear();
-        this.listView.getItems().clear();
-        searchLabel.setText("Nghĩa của từ");
-        initComponents(this.searchPane, getCurrentDic().getNewWords(), "#searchListView", "#searchDefinitionView");
-        readData(getCurrentDic().getPATH(), getCurrentDic().getNewWords());
-        for (Map.Entry<String, Word> entry : getCurrentDic().getNewWords().entrySet()) {
-            Word temp = entry.getValue();
-            searchMap.put(temp.getWord(), temp.getDef());
-        }
-        listView.getItems().addAll(searchMap.keySet());
-    }
-
 
     public void pressedSpeaker() {
         if (isEVDic) {
@@ -183,7 +176,8 @@ public class GeneralController extends MainController implements Initializable {
     public void clickTransBtn() throws IOException {
         isEVDic = !isEVDic;
         setLanguage();
-        clearPane();
+        this.listView.getItems().clear();
+        loadWordList(getCurrentDic().getNewWords());
     }
 
     public NewDictionary getCurrentDic() {
@@ -191,56 +185,21 @@ public class GeneralController extends MainController implements Initializable {
             return evDic;
         else return veDic;
     }
-    @FXML
-    public void pressedEdit() {
-//        String spelling = searchTextField.getText();
-//        if (spelling.equals("")) {
-//            searchController.showWarningAlert();
-//            return;
-//        }
-//        if (isOnEditDefinition) {
-//            isOnEditDefinition = false;
-//            editDefinition.setVisible(false);
-//            saveChangeButton.setVisible(false);
-//            return;
-//        }
-//        isOnEditDefinition = true;
-//        saveChangeButton.setVisible(true);
-//        editDefinition.setVisible(true);
-//        int index = Collections.binarySearch(getCurrentDic().getVocab(), new Word(spelling, null));
-//        String meaning = getCurrentDic().getVocab().get(index).getMeaning();
-//        editDefinition.setHtmlText(meaning);
-    }
-    @FXML
-    public void pressedDelete() throws IOException {
-//        String spelling = searchTextField.getText();
-//        if (spelling.equals("")) {
-//            searchController.showWarningAlert();
-//            return;
-//        }
-//        ButtonType yes = new ButtonType("Có", ButtonBar.ButtonData.OK_DONE);
-//        ButtonType no = new ButtonType("Không", ButtonBar.ButtonData.CANCEL_CLOSE);
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Bạn có chắc chắn muốn xoá từ này không?", yes, no);
-//        alert.setTitle("Thông báo");
-//        alert.setHeaderText(null);
-//        alert.showAndWait();
-//
-//        if (alert.getResult() == yes) {
-//            getCurrentDic().removeWord(spelling, getCurrentDic().getPATH(), getCurrentDic().getNewWords());
-//            getCurrentDic().removeWord(spelling, getCurrentDic().getHISTORY_PATH(), getCurrentDic().getHistoryNewWords());
-//            getCurrentDic().removeWord(spelling, getCurrentDic().getBOOKMARK_PATH(), getCurrentDic().getBookmarkNewWords());
-//            searchLabel.setText("Nghĩa của từ");
-//            searchTextField.clear();
-//            definitionView.getEngine().loadContent("");
-//        }
+
+    public void saveWordToFile(String path, Map<String, Word> temp, String word, String def) throws IOException {
+        int index = Collections.binarySearch(getCurrentDic().initKeys(temp), word);
+        if (index >= 0) {
+            temp.get(word).setDef(def);
+            getCurrentDic().updateWordToFile(path, temp);
+        }
     }
 
-    private void saveWordToFile(String path, ArrayList<Word> temp, String spelling, String meaning) {
-//        int index = Collections.binarySearch(temp, new Word(spelling, null));
-//        if (index >= 0) {
-//            temp.get(index).setMeaning(meaning);
-//            getCurrentDic().updateWordToFile(path, temp);
-//        }
+    public void showWarningAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+        alert.setContentText("Không có từ nào được chọn!");
+        alert.showAndWait();
     }
 
     @Override

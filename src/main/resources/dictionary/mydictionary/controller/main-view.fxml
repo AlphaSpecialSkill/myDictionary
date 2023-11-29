@@ -15,6 +15,7 @@
                   <Button fx:id="googlebtn" mnemonicParsing="false" onMouseClicked="#pressedGoogle" prefHeight="80.0" prefWidth="80.0" text="Google" textFill="WHITE" />
                   <Button fx:id="bookmarkbtn" mnemonicParsing="false" onMouseClicked="#pressedBookmark" prefHeight="80.0" prefWidth="80.0" text="Bookmark" textFill="WHITE" />
                   <Button fx:id="historybtn" mnemonicParsing="false" onMouseClicked="#pressedHistory" prefHeight="80.0" prefWidth="80.0" text="History" textFill="WHITE" />
+                  <Button fx:id="addWordbtn" mnemonicParsing="false" onMouseClicked="#pressedAddWord" prefHeight="80.0" prefWidth="80.0" text="Add Word" textFill="WHITE" />
                </children>
             </VBox>
          </left>
